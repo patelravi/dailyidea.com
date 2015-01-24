@@ -1,0 +1,17 @@
+<h1>idea list</h1>
+
+<p>Search: <input ng-model="query"></p>
+
+<ul ng-controller="IdeaListCtrl">
+    <li ng-repeat="idea in ideas | filter:query">
+        <a href="#/ideas/{{idea._id}}">
+        {{idea._source.created}} : 
+        {{idea._source.user}} : 
+        {{idea._source.headline}}<br>
+        {{idea._source.detail}}
+        </a>
+        <hr>
+    </li>
+</ul>
+
+

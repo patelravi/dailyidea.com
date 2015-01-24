@@ -1,0 +1,8 @@
+<h1>add idea</h1>
+
+<form method="POST" ng-submit="submit()" ng-controller="CreateIdeaCtrl">
+    <label>User</label><input type="email" name="user" required ng-model="ideaForm.user"></input><br>
+    <label>Headline</label><input type="text" name="headline" ng-model="ideaForm.headline"></input><br>
+    <label>Detail</label><textarea name="detail" ng-model="ideaForm.detail"></textarea><br>
+    <input type="submit"></input>
+</form>
