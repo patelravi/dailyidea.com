@@ -1,13 +1,7 @@
-<h1>idea detail</h1>
-
-{{ideaID}}
-
+<h1>{{idea._source.headline}}</h1>
+<p>Submitted by <a href="#/users/{{idea._source.user}}">{{idea._source.user}}</a> on {{idea._source.created}}
 <hr>
-<pre>
-
-{{idea._source.created}}
-{{idea._source.headline}}
+<h2>Description</h2>
 {{idea._source.detail}}
-{{idea._source.user}}
-</pre>
-
+<hr>
+idea ID:{{ideaID}}

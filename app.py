@@ -58,6 +58,13 @@ def api_ideas():
         results = es.search(index=INDEX, doc_type=DOC_TYPE, size=NUM_RESULTS)
     return jsonify(results)
 
+@app.route("/api/users/<user>/")
+def api_user_detail(user):
+    body = {"query":{"match":{"user":user}}}
+    results = es.search(index="main", body=body)
+    # ['hits']['hits']
+    return jsonify(results)
+
 @app.route("/api/ideas/<ideaID>/")
 def api_idea_detail(ideaID):
     results = es.search(index="main",body={"query":{"match":{"_id":ideaID}}})['hits']['hits'][0]

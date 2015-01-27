@@ -1,0 +1,15 @@
+<h1>User: {{username}}</h1>
+
+<hr>
+
+<ul ng-controller="UserDetailCtrl">
+    <li ng-repeat="idea in ideas">
+        {{idea._source.user}} : 
+        <a href="#/ideas/{{idea._id}}">
+            {{idea._source.headline}}<br>
+        </a>
+        ({{idea._source.created}})
+        <hr>
+    </li>
+</ul>
+

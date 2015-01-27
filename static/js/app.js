@@ -24,6 +24,10 @@ dailyIdeaApp.config(['$routeProvider',
                 templateUrl: '/static/html/partials/idea_detail.html',
                 controller: 'IdeaDetailCtrl'
             }).
+            when('/users/:username', {
+                templateUrl: '/static/html/partials/user_detail.html',
+                controller: 'UserDetailCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });
