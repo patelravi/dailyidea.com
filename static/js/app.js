@@ -2,6 +2,7 @@ var base_url = "http://localhost:5000"
 
 var dailyIdeaApp = angular.module("dailyIdeaApp", [
     'ngRoute',
+    'angularMoment',
     'dailyIdeaControllers',
 ]);
 
