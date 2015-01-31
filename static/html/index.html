@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<div id="layout" class="pure-g">
+<div id="layout" class="pure-g" ng-controller="StaticPageCtrl">
     <div class="sidebar pure-u-1 pure-u-md-1-4">
         <div class="header">
             <h1 class="brand-title">Daily<br><i class="fa fa-lightbulb-o bulb"></i>Idea</h1>
@@ -26,6 +26,15 @@
     </div>
 
     <div class="content pure-u-1 pure-u-md-3-4">
+
+        <div class="pure-menu pure-menu-open pure-menu-horizontal text-center">
+            <ul>
+                <li ng-class="getClass('/')"><a href="#/">Get Started</a></li>
+                <li ng-class="getClass('/inspiration')"><a href="#/inspiration">Inspiration</a></li>
+                <li ng-class="getClass('/features')"><a href="#/features">Features</a></li>
+            </ul>
+        </div>
+
         <div>
             <!-- A wrapper for all the blog posts -->
             <div class="posts">

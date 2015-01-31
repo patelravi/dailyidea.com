@@ -1,4 +1,4 @@
-var base_url = "http://localhost:5000"
+var base_url = "http://localhost:8080"
 
 var dailyIdeaApp = angular.module("dailyIdeaApp", [
     'ngRoute',
@@ -11,7 +11,15 @@ dailyIdeaApp.config(['$routeProvider',
         $routeProvider.
             when('/', {
                 templateUrl: '/static/html/partials/landing.html',
-                controller: 'IdeaListCtrl'
+                controller: 'StaticPageCtrl'
+            }).
+            when('/inspiration', {
+                templateUrl: '/static/html/partials/inspiration.html',
+                controller: 'StaticPageCtrl'
+            }).
+            when('/features', {
+                templateUrl: '/static/html/partials/features.html',
+                controller: 'StaticPageCtrl'
             }).
             when('/ideas', {
                 templateUrl: '/static/html/partials/idea_list.html',

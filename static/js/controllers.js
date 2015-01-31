@@ -1,5 +1,15 @@
 var dailyIdeaControllers = angular.module("dailyIdeaControllers", []);
 
+dailyIdeaControllers.controller("StaticPageCtrl", function($scope, $location) {
+    $scope.getClass = function(path) {
+        if ($location.path() == path) {
+          return "pure-menu-selected"
+        } else {
+          return ""
+        }
+    }
+});
+
 dailyIdeaControllers.controller("IdeaListCtrl", function($scope, $http) {
     var api_endpoint = "/api/ideas/";
     var url = base_url + api_endpoint;

@@ -164,3 +164,5 @@ blockquote {
     text-transform: uppercase;
     font-weight: bold;
 }
+
+.text-center { text-align: center;}
