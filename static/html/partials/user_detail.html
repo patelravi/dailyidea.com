@@ -4,12 +4,8 @@
 
 <ul ng-controller="UserDetailCtrl">
     <li ng-repeat="idea in ideas">
-        {{idea._source.user}} : 
-        <a href="#/ideas/{{idea._id}}">
-            {{idea._source.headline}}<br>
-        </a>
-        ({{idea._source.created | amDateFormat:'MMMM Do YYYY'}})
-        <hr>
+        <a class="capitalize" href="#/ideas/{{idea._id}}">{{idea._source.headline}}</a>
+        <span class="quiet smaller">{{idea._source.created | amDateFormat:'MMMM Do YYYY'}}</span>
     </li>
 </ul>
 
