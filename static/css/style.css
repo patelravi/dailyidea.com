@@ -166,3 +166,7 @@ blockquote {
 }
 
 .text-center { text-align: center;}
+
+.idea-detail {
+    white-space:pre-line;
+}

@@ -2,6 +2,7 @@
 <p>Submitted by <a href="#/users/{{idea._source.user}}">{{idea._source.user}}</a> on {{idea._source.created | amDateFormat:'MMMM Do YYYY'}}
 <hr>
 <h2>Description</h2>
-{{idea._source.detail}}
+<div ng-bind-html="idea._source.detail" class="idea-detail">
+</div>
 <hr>
 idea ID:{{ideaID}}

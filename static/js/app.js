@@ -1,7 +1,8 @@
-var base_url = "http://localhost:8080"
+var base_url = ""
 
 var dailyIdeaApp = angular.module("dailyIdeaApp", [
     'ngRoute',
+    'ngSanitize',
     'angularMoment',
     'dailyIdeaControllers',
 ]);
