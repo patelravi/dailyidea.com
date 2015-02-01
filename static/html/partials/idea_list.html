@@ -4,13 +4,8 @@
 
 <ul ng-controller="IdeaListCtrl">
     <li ng-repeat="idea in ideas | filter:query">
-        <a href="#/ideas/{{idea._id}}">
-        ({{idea._source.created | amDateFormat:'MMMM Do YYYY'}}) :
-        {{idea._source.user}} : 
-        {{idea._source.headline}}<br>
-        {{idea._source.detail}}
-        </a>
-        <hr>
+        <a href="#/ideas/{{idea._id}}">{{idea._source.headline}}</a>
+        <span class="quiet smaller">by {{idea._source.user}}</span>
     </li>
 </ul>
 

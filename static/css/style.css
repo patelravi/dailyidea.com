@@ -170,3 +170,20 @@ blockquote {
 .idea-detail {
     white-space:pre-line;
 }
+
+.quiet {
+    color:#bbb;
+    font-style: italic;
+    font-weight: 100;
+}
+.smaller {
+    font-size: 0.8em;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0
+}
+li {
+    padding-bottom: 5px;
+}
