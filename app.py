@@ -105,6 +105,7 @@ def process_incoming_email():
     SEPARATOR = "\n"
     try:
         headline, detail = body_plain.split(SEPARATOR, 1)
+        detail = detail.strip()
     except:
         headline = body_plain
         detail = ""
