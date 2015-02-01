@@ -1,0 +1,12 @@
+Just letting you know we got your idea!
+
+Here's a link for you to view it online: {{ url }}
+
+You can always go back and add to or edit it in the future.
+
+---------------------
+Title: {{ headline }}
+
+Detail:
+{{ detail }}
+

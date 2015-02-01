@@ -74,7 +74,8 @@ def insert_idea(user, headline, detail=""):
         created   = datetime.datetime.now(),
         private   = False,
     )
-    es.index(index=INDEX, doc_type=DOC_TYPE, body=body)
+    result = es.index(index=INDEX, doc_type=DOC_TYPE, body=body)
+    return result.get("_id")
 
 # The only real route -- to receive emails from Mailgun
 # Handler for HTTP POST to http://myhost.com/messages for the route defined above
@@ -113,12 +114,19 @@ def process_incoming_email():
         # do something with the file
         # probably store somewhere like fileinkpicker?
 
-    insert_idea(sender, headline, detail)
+
+    idea_id = insert_idea(sender, headline, detail)
 
     # craft a response email
     today = datetime.datetime.now().date()
     subject="{} Idea Saved: {}".format(str(today), headline),
-    text = "Hello!"
+    url= "http://dailyidea.com/#/ideas/{}".format(idea_id)
+    context = dict(
+        headline=headline,
+        detail=detail,
+        url=url,
+        )
+    text = render_template("emails/idea_receipt_confirmation.email", **context)
     send_email(
         to=sender,
         subject=subject,
@@ -135,8 +143,6 @@ def send_email(to, subject, text, from_="Eric from Daily Idea <eric@dailyidea.co
     }
     if extra_data is not None:
         data.update(extra_data)
-
-    print "          sending mail!"
 
     response = requests.post(
         settings.MAILGUN_URL,
