@@ -7,24 +7,21 @@ from flask import render_template
 from flask import jsonify
 import elasticsearch
 
+from settings import (
+    DEBUG,
+    ELASTICSEARCH_URL,
+    PORT,
+)
+
 # Flask
 app = Flask(__name__)
-DEBUG = True
 
 # Elastic Search
-es = elasticsearch.Elasticsearch()
+es = elasticsearch.Elasticsearch([ELASTICSEARCH_URL])
 INDEX = "main"
 DOC_TYPE = "idea"
 
 """
-Necessary endpoints
-
-# 1. GET, listens for posts from mailgun, inserts an idea entry via
-# 2. POST, inserts an idea entry
-# 3. PUT, update existing entry
-4. GET, read single entry
-# 5. GET, read all entries that match query (user, subject, etc)
-
 es.search(index="main", body={"query":{"fuzzy":{"_all":"run"}}});
 """
 
@@ -123,4 +120,4 @@ def process_incoming_email():
 
 
 if __name__ == "__main__":
-    app.run(debug=DEBUG)
+    app.run(host="0.0.0.0", debug=DEBUG, port=PORT)
