@@ -114,12 +114,11 @@ def process_incoming_email():
         # do something with the file
         # probably store somewhere like fileinkpicker?
 
-
     idea_id = insert_idea(sender, headline, detail)
 
     # craft a response email
     today = datetime.datetime.now().date()
-    subject="{} Idea Saved: {}".format(str(today), headline),
+    subject ="{} Idea Saved: {}".format(str(today), headline)
     url= "http://dailyidea.com/#/ideas/{}".format(idea_id)
     context = dict(
         headline=headline,
@@ -127,13 +126,14 @@ def process_incoming_email():
         url=url,
         )
     text = render_template("emails/idea_receipt_confirmation.email", **context)
-    send_email(
+    _ = send_email(
         to=sender,
         subject=subject,
         text=text,
         )
 
-    return 'OK: {}'.format(", ".join([sender, recipient, subject, body_plain]))
+    response =  'OK: {}'.format(", ".join([sender, recipient, subject, body_plain]))
+    return response
 
 def send_email(to, subject, text, from_="Eric from Daily Idea <eric@dailyidea.com>", extra_data=None):
     data = {"from": from_,
@@ -150,6 +150,7 @@ def send_email(to, subject, text, from_="Eric from Daily Idea <eric@dailyidea.co
         data=data
     )
     print "          sent mail!"
+    print response
     return response
 
 if __name__ == "__main__":
