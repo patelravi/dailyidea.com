@@ -1,5 +1,6 @@
 import datetime
 import json
+import requests
 
 from flask import Flask
 from flask import request
@@ -7,17 +8,13 @@ from flask import render_template
 from flask import jsonify
 import elasticsearch
 
-from settings import (
-    DEBUG,
-    ELASTICSEARCH_URL,
-    PORT,
-)
+import settings
 
 # Flask
 app = Flask(__name__)
 
 # Elastic Search
-es = elasticsearch.Elasticsearch([ELASTICSEARCH_URL])
+es = elasticsearch.Elasticsearch([settings.ELASTICSEARCH_URL])
 INDEX = "main"
 DOC_TYPE = "idea"
 
@@ -97,7 +94,7 @@ def process_incoming_email():
     body_plain = post.get('body-plain', '')
     body_without_quotes = post.get('stripped-text', '')
 
-    if DEBUG:
+    if settings.DEBUG:
         print "Incoming email message from mailgun:"
         print sender, recipient, subject, body_plain
 
@@ -117,8 +114,37 @@ def process_incoming_email():
         # probably store somewhere like fileinkpicker?
 
     insert_idea(sender, headline, detail)
+
+    # craft a response email
+    today = datetime.datetime.now().date()
+    subject="{} Idea Saved: {}".format(str(today), headline),
+    text = "Hello!"
+    send_email(
+        to=sender,
+        subject=subject,
+        text=text,
+        )
+
     return 'OK: {}'.format(", ".join([sender, recipient, subject, body_plain]))
 
+def send_email(to, subject, text, from_="Eric from Daily Idea <eric@dailyidea.com>", extra_data=None):
+    data = {"from": from_,
+            "to": [to],
+            "subject": subject,
+            "text": text
+    }
+    if extra_data is not None:
+        data.update(extra_data)
+
+    print "          sending mail!"
+
+    response = requests.post(
+        settings.MAILGUN_URL,
+        auth=("api", settings.MAILGUN_API_KEY),
+        data=data
+    )
+    print "          sent mail!"
+    return response
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=DEBUG, port=PORT)
+    app.run(host="0.0.0.0", debug=settings.DEBUG, port=settings.PORT)

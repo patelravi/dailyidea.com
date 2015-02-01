@@ -1,3 +1,7 @@
+MAILGUN_URL = "https://api.mailgun.net/v2/dailyidea.com/messages"
+
+
+
 DEBUG = True
 ELASTICSEARCH_URL = ""
 PORT = 5000
@@ -5,9 +9,11 @@ HOST = "localhost"
 
 
 
+import os
+ELASTICSEARCH_URL = os.environ['ELASTICSEARCH_URL']
+MAILGUN_API_KEY = os.environ['MAILGUN_API_KEY']
 
 DEBUG = False
-ELASTICSEARCH_URL = "https://h7uy3um0a6:lt6or9pz4z@erics-first-starter-8798967915.us-west-2.bonsai.io:443"
 PORT = 80
 HOST = "/"
 
