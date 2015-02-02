@@ -1,13 +1,17 @@
 import datetime
 import json
 import requests
+import random
+import string
 
 from flask import Flask
 from flask import request
 from flask import render_template
 from flask import jsonify
+from stormpath.client import Client as StormpathClient
 import elasticsearch
 
+from alliterativeanimals import get_name
 import settings
 
 # Flask
@@ -21,6 +25,12 @@ DOC_TYPE = "idea"
 """
 es.search(index="main", body={"query":{"fuzzy":{"_all":"run"}}});
 """
+
+# Stormpath
+stormpath_client = StormpathClient(
+                       api_key_id=settings.STORMPATH_API_KEY_ID,
+                       api_key_secret=settings.STORMPATH_API_KEY_SECRET)
+stormpath_application = stormpath_client.applications.search(settings.STORMPATH_APPLICATION_NAME)[0]
 
 # STATIC FILES
 
@@ -67,6 +77,34 @@ def api_idea_detail(ideaID):
 # HELPER FUNCTIONS
 
 def insert_idea(user, headline, detail=""):
+    CREATE_USERS = True
+    if CREATE_USERS is True:
+        # First check to see if the user exists
+        stormpath_accounts = stormpath_application.accounts.search(user)
+        if len(stormpath_accounts) == 0:
+            # If not, try to create the user
+            try:
+                given_name, surname = get_name().split(" ", 1)
+                name_slug = (given_name + surname).lower().replace(" ","")
+                stormpath_account = stormpath_application.accounts.create({
+                    'given_name': given_name,
+                    'surname':    surname,
+                    'username':   name_slug,
+                    'email':      user,
+                    'password':   "".join(random.sample(string.letters + string.digits,16)),
+                })
+            except Exception, e:
+                print e
+                pass
+                """
+                A stormpath exception looks like this:
+                    {u'code': 2001,
+                     u'developerMessage': u'Account with that email already exists.  Please choose another email.',
+                     u'message': u'Account with that email already exists.  Please choose another email.',
+                     u'moreInfo': u'http://docs.stormpath.com/errors/2001',
+                     u'status': 409}
+                """
+
     body = dict(
         user      = user,
         headline  = headline,
