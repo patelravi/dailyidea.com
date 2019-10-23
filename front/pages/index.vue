@@ -7,14 +7,13 @@
         <div class="row futureListContainer">
           <div class="col-md-5">
             <div class="firstFreatureList">
-              <div class="firstHeader">Your Idea Could Be Huge!</div>
-              <div class="subHeader">That is, if you don't forget it !</div>
+              <div class="firstHeader">Every Day, Log An Idea</div>
+              <div class="subHeader">
+                A project idea, a startup idea, a work idea
+              </div>
               <div class="descriptionSection">
-                Submitting an idea every day is as simple as sending an
-                email.<br />
-                We will store your ideas for you, so you can share them with
-                your<br />
-                friends and conquer the world!
+                You'll get an email in your inbox reminding you to submit an
+                idea. Just respond to it and we'll save it for you.
               </div>
 
               <!-- Signup Button -->
@@ -24,6 +23,7 @@
                   :to="{ name: 'auth-signup' }"
                   large
                   rounded
+                  dark
                   class="signupButton"
                   >Sign up Now</v-btn
                 >
@@ -33,10 +33,23 @@
 
           <div class="col-md-7">
             <div class="firstImageContainer">
-              <img
+              <!-- <img
                 alt="image"
                 class="firstImage"
                 src="~/assets/images/homeImage.png"
+              /> -->
+              <!-- Lamp Image -->
+              <img
+                class="lampImg"
+                src="~/assets/images/bulb_with_light_holder.png"
+              />
+              <img
+                class="personImg person2Img"
+                src="~/assets/images/home/person_2.png"
+              />
+              <img
+                class="personImg person3Img"
+                src="~/assets/images/home/person_3.png"
               />
             </div>
           </div>
@@ -49,13 +62,9 @@
         </div>
 
         <v-layout class="desktopReviews">
-          <v-flex md4 lg4>
+          <v-flex v-for="idea in ideas" :key="idea.ideaId" md4 lg4>
             <div color="white" class="review">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled.
-
+              <div v-html="idea.content"></div>
               <!-- User Icon -->
               <div class="reviewerInfo">
                 <div class="row reviewerDetail">
@@ -68,71 +77,17 @@
                   </div>
                   <div class="col-md-8">
                     <div class="reviewerName">Boniface Esanji</div>
-                    <div class="reviewTime">1h ago</div>
+                    <div class="reviewTime">{{ idea.relativeCreatedTime }}</div>
                   </div>
                 </div>
               </div>
-            </div>
-          </v-flex>
-          <v-flex md4 lg4>
-            <div color="white" class="review">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled.
-
-              <!-- User Icon -->
-              <div class="reviewerInfo">
-                <div class="row reviewerDetail">
-                  <div class="col-md-2">
-                    <img
-                      alt="image"
-                      class="reviewInfoImage"
-                      src="~/assets/images/Oval.png"
-                    />
-                  </div>
-                  <div class="col-md-8">
-                    <div class="reviewerName">Amelia Cabal</div>
-                    <div class="reviewTime">1h ago</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </v-flex>
-          <v-flex md4 lg4>
-            <div color="white" class="review">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled.
-              <!-- User Icon -->
-
-              <div class="reviewerInfo">
-                <div class="row reviewerDetail">
-                  <div class="col-md-2">
-                    <img
-                      alt="image"
-                      class="reviewInfoImage"
-                      src="~/assets/images/Oval.png"
-                    />
-                  </div>
-                  <div class="col-md-8">
-                    <div class="reviewerName">Anne-Marije Markink</div>
-                    <div class="reviewTime">1h ago</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- <div class="gjhkF">
-                <div class="reviewTime"> 1h ago</div>
-              </div> -->
             </div>
           </v-flex>
         </v-layout>
 
         <!-- Signup Button -->
         <div class="moreBrowseBtn">
-          <v-btn color="primary" large rounded class="browseButton"
+          <v-btn color="primary" dark large rounded class="browseButton"
             >Browse More Ideas</v-btn
           >
         </div>
@@ -166,6 +121,7 @@
                 normal
                 outlined
                 rounded
+                dark
                 class="viewMoreButton"
                 color="primary"
                 >View More</v-btn
@@ -186,7 +142,6 @@
       </footer>
 
       <!-- Mobile view -->
-
       <section class="mobileFirstSection   hidden-md-and-up">
         <div class="firstFreatureList">
           <div class="firstHeader">Your Idea Could Be Huge!</div>
@@ -329,9 +284,36 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import Layout from '@/components/layout/Layout'
+import getPublicIdeas from '~/graphql/query/getPublicIdeas'
+dayjs.extend(relativeTime)
 export default {
   components: { Layout },
+  data: () => ({
+    ideas: null
+  }),
+  async asyncData({ app }) {
+    let result = await app.$amplifyApi.graphql({
+      query: getPublicIdeas,
+      variables: {
+        nextToken: null,
+        limit: 3
+      },
+      authMode: 'API_KEY'
+    })
+
+    result = result.data.getPublicIdeas
+    return {
+      ideas: result.items
+    }
+  },
+  created() {
+    this.ideas.forEach(idea => {
+      idea.relativeCreatedTime = dayjs(idea.createdDate).fromNow()
+    })
+  },
   methods: {}
 }
 </script>
@@ -386,18 +368,35 @@ export default {
           .signupButton {
             margin-top: 30px;
             width: 200px;
-            background: #326bde !important;
+            // background: #326bde !important;
 
-            -webkit-box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
-            -moz-box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
-            box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
+            // -webkit-box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
+            // -moz-box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
+            // box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
           }
         }
       }
 
       .firstImageContainer {
         margin-right: 10vh;
-        margin-top: 20px;
+        margin-top: 0px;
+        text-align: right;
+        // border: 1px solid blue;
+        position: relative;
+
+        .personImg {
+          height: 50vh;
+          margin-top: 35vh;
+          margin-right: 10%;
+          // border: 1px solid red;
+        }
+
+        .lampImg {
+          position: absolute;
+          height: 22vh;
+          left: 25%;
+          top: 0%;
+        }
 
         .firstImage {
           height: 60vh;
@@ -487,11 +486,6 @@ export default {
       text-align: center;
       .browseButton {
         width: 200px;
-        background: #326bde !important;
-
-        -webkit-box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
-        -moz-box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
-        box-shadow: 4px 26px 79px -11px rgba(50, 107, 222, 1);
       }
     }
   }
