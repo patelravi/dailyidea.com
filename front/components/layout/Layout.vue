@@ -71,6 +71,7 @@
             >
             <v-spacer />
             <template>
+              <!-- search icon -->
               <div class="searchIcon">
                 <v-icon
                   v-if="!searchModeForDesktop"
@@ -79,13 +80,18 @@
                   >fas fa-search</v-icon
                 >
               </div>
+
+              <!-- setting icon -->
               <v-btn text icon to="/settings" class="settingBtn" fab>
-                <v-icon size="12" class="settingIcon">fas fa-cog</v-icon>
+                <v-icon size="16" class="settingIcon">fas fa-cog</v-icon>
               </v-btn>
+
+              <!-- user name -->
               <span class="userName">{{
                 $store.getters['cognito/username']
               }}</span>
 
+              <!-- profile btn -->
               <v-btn small to="/profile" class="profileBtn" fab>
                 <v-icon>fas fa-user</v-icon>
               </v-btn>
@@ -454,7 +460,6 @@ export default {
 
       .backButon {
         margin-right: 20px;
-
         color: $primary-color;
         font-size: 15px;
         line-height: 20px;
@@ -482,10 +487,9 @@ export default {
 
       .searchInput {
         border: solid 1px rgba(228, 228, 228, 0.38);
-
         padding: 0px;
         margin-left: 15% !important;
-        width: 40%;
+        width: 45%;
 
         .v-input__control {
           max-height: 35px !important;
@@ -518,26 +522,20 @@ export default {
 
       .closeIconForDesktopSearch {
         position: absolute;
-        right: 456px;
+        right: 430px;
         font-size: 13px;
       }
 
       .searchIcon {
-        // border: 0.8px solid #7777;
         .desktopSeachIcon {
-          margin-right: 20px;
+          margin-right: 10px;
         }
       }
 
       .userName {
         margin-left: 20px;
-
         font-size: 20px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
         line-height: 1.5;
-        letter-spacing: normal;
         text-align: left;
         color: #18141c;
       }
@@ -625,11 +623,8 @@ export default {
       width: 100%;
 
       .nonSearchSection {
-        padding: 0px 0px;
-
         .text {
           text-align: right !important;
-          // padding-left: 45px;
           margin-top: 10px;
           font-size: 14px;
           font-weight: 600;
@@ -659,7 +654,7 @@ export default {
         .icons {
           color: #c0b7c5 !important;
           font-size: 16px;
-          margin-top: 16px;
+          margin-top: 10px;
         }
 
         .rightSide {

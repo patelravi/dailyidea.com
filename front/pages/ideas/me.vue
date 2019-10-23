@@ -207,8 +207,10 @@ export default {
 
   .titleDiv {
     text-align: center;
-    // border: 1px solid red;
-    // min-height: 30px;
+
+    @media #{$small-screen} {
+      display: none;
+    }
 
     .titleText {
       display: inline-block;

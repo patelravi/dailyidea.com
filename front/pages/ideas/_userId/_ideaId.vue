@@ -13,7 +13,7 @@
       onCopyShareIdeaLink: copyShareLink
     }"
     @showShareIdeaDialog="showShareIdeaDialog"
-    @showSaveIdeaForMobileDailog="showSaveIdeaMobileViewDailog = true"
+    @showSaveIdeaForMobileDailog="showSaveIdeaDailog = true"
     @showPrivateIdeaDailog="privateIdeaDailog = true"
     @onEditIdea="showIdeaEditor"
   >
@@ -491,8 +491,8 @@
               Idea with you
             </div>
             <div class="subHeader">
-              Daily Idea Lets you browse othre <br />people's ideas but also
-              save your<br />
+              Daily Idea Lets you browse othre people's ideas but also
+              save your
               own. What would you like to do?
             </div>
           </div>
@@ -537,19 +537,19 @@
                   src="~/assets/images/saveDailogMobile.png"
                 />
               </div>
-              <div class="col-md-8">
-                <div class="detailOfSave">
+              <div class="detailOfSave">
+              <div class="col-md-8 ">
                 <div class="mainheader">Save Idea</div>
                 <div class="subHeader">
                   To save this idea and get back to it at any time, you need to
                   create an account.Don't worry, all we need is your email.
                 </div>
-                </div>
               </div>
-                </div>
               </div>
-            </div>
-          </div>
+             </div>
+           </div>
+        </div>
+     </div>
 
           <!-- Text Fields -->
           <div class="inputDetails">
@@ -615,12 +615,12 @@
           <!-- Popup Header -->
           <div class="header">
             <div class="headlineText">
-              Yay, You Saved <br />
+              Yay, You Saved 
               an Idea!
             </div>
             <div class="subHeader">
-              Daily Idea Lets you browse othre <br />people's ideas but also
-              save your<br />
+              Daily Idea Lets you browse othre people's ideas but also
+              save your
               own. What would you like to do?
             </div>
           </div>
@@ -664,8 +664,8 @@
           </div>
           <div class="header">
             <div class="headlineText">
-              So You Want To Keep <br />
-              Your Ideas to <br />
+              So You Want To Keep 
+              Your Ideas to 
               Yourself ?
             </div>
             <div class="subHeader">
@@ -691,7 +691,7 @@
         v-model="showSaveIdeaMobileViewDailog"
         content-class="saveIdeaMobileViewDialog"
         persistent
-        max-width="350px"
+        max-width="380px"
       >
         <div class="closeBtn">
           <v-icon
@@ -706,19 +706,21 @@
           <!-- Popup Header -->
           <div class="headerInfo">
             <div class="row saveIdeaDetail">
-              <div class="col-md-0">
+              <div class="col-sm-1">
                 <img
                   alt="image"
                   class="saveIdeaImage"
                   src="~/assets/images/saveDailogMobile.png"
                 />
               </div>
-              <div class="col-md-0">
+              <div class="col-sm-11">
+                <div class="saveDetail">
                 <div class="mainheader">Save Idea</div>
                 <div class="subHeader">
                   To save this idea and get back to it at any time, you need to
                   create an account.Don't worry, all we need is your email.
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -1722,11 +1724,6 @@ export default {
 .saveIdeaDialog {
   padding: 14px 25px 20px 25px;
   background: white;
-
-  @media #{$small-screen} {
-    width: 320px;
-  }
-
   .closeBtn {
     .cancelIcon {
       float: right;
@@ -1743,6 +1740,9 @@ export default {
 
       .detailOfSave{
         margin-left:30px;
+
+        .col-md-8 {
+          margin-left: 15vh;
       .mainheader {
         font-size: 25px;
         margin-top: 35px;
@@ -1758,7 +1758,8 @@ export default {
         line-height: 25px;
         color: #777;
       }
-      }
+     }
+   }
     }
   }
 
@@ -1776,6 +1777,65 @@ export default {
       width: 100%;
       height: 50px;
     }
+  }
+
+
+  @media #{$small-screen} {
+  padding: 14px 15px 20px 15px;
+  background: white;
+
+  .closeBtn {
+    .cancelIcon {
+      float: right;
+    }
+  }
+
+  .headerInfo {
+    .saveIdeaDetail {
+      .saveIdeaImage{
+        position: absolute;
+        margin-left:-6vh;
+        margin-top: 6vh;
+      }
+
+      .detailOfSave{
+        margin-left:5vh;
+
+      .col-md-8{ 
+      margin-left: 6vh;
+      margin-top: 2vh;
+      .mainheader {
+        font-size: 20px;
+        margin-top: 10px;
+        margin-left: 39px;
+      }
+
+      .subHeader {
+        font-size: 14px;
+        margin-top: 15px;
+        margin-left: 39px;
+        color: #777;
+      }
+      }
+      }
+    }
+  }
+
+  .inputDetails {
+    margin-top:2vh;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .btnContainer {
+    margin-top: 15px;
+    margin-bottom: 20px;
+
+    .shareBtn {
+      width: 100%;
+      height: 40px;
+    }
+  }
   }
 }
 
@@ -1809,8 +1869,6 @@ export default {
     }
 
     .subHeader {
-      // text-align: left;
-      // margin: 25px 30px 25px 50px;
       font-size: 18px;
       margin-top: 20px;
       line-height: 35px;
@@ -1824,7 +1882,6 @@ export default {
     margin-bottom: 20px;
     margin-left: 30px;
     margin-right: 30px;
-    // text-align: right;
 
     .shareBtn {
       height: 55px;
@@ -1836,6 +1893,40 @@ export default {
       width: 100%;
     }
   }
+
+  @media #{$small-screen} {
+
+    .bulbImageSection{
+      .bulbImage{
+        height: 17vh;
+      }
+    }
+
+    .header{
+      .headlineText{
+        font-size: 22px;
+        margin:15px;
+      }
+
+      .subHeader{
+        font-size: 14px;
+        line-height: 25px;
+      }
+
+     
+    }
+
+     .btnContainer{
+        .shareBtn{
+          height: 40px;
+        }
+
+        .browseBtn{
+          height: 40px;
+        }
+      }
+  }
+ 
 }
 
 .privateIdeaSectionDialog {
@@ -1887,7 +1978,6 @@ export default {
     margin-bottom: 20px;
     margin-left: 30px;
     margin-right: 30px;
-    // text-align: right;
 
     .shareBtn {
       height: 55px;
@@ -1919,25 +2009,31 @@ export default {
       margin-top: 30px;
 
       .headlineText {
-        margin: 8px 50px 20px 50px;
-        font-size: 25px;
+        margin-left: 20px;
+        margin-right: 20px;
+        font-size: 22px;
         font-family: Quatro;
-        // letter-spacing: 2px;
       }
 
       .subHeader {
-        // letter-spacing: 1px;
-        font-size: 17px;
+        font-size: 14px;
         margin-top: 25px;
-        // line-height: 32px;
+        line-height: 23px;
         color: #777;
       }
 
       .rateSection {
         margin-top: 20px;
-        font-size: 25px;
+        font-size: 22px;
       }
+
+     
     }
+     .btnContainer{
+        .shareBtn{
+          height: 40px;
+        }
+      }
   }
 }
 
@@ -1971,8 +2067,6 @@ export default {
     }
 
     .subHeader {
-      // text-align: left;
-      // margin: 25px 30px 25px 50px;
       font-size: 18px;
       margin-top: 20px;
       line-height: 35px;
@@ -1986,7 +2080,6 @@ export default {
     margin-bottom: 20px;
     margin-left: 30px;
     margin-right: 30px;
-    // text-align: right;
 
     .shareBtn {
       height: 55px;
@@ -1998,52 +2091,38 @@ export default {
       width: 100%;
     }
   }
+
+
+   @media #{$small-screen} {
+     .bulbImageSection{
+       .bulbImage{
+         height: 18vh;
+       }
+     }
+
+     .header{
+       .headlineText{
+         font-size: 22px;
+       }
+       .subHeader{
+         width: 90%;
+          font-size: 14px;
+          line-height: 20px;
+          margin:20px;
+       }
+     }
+
+
+     .btnContainer{
+       .shareBtn{
+        height: 40px;
+       }
+       .browseBtn{
+         height: 40px;
+       }
+     }
+   }
 }
 
-.saveIdeaMobileViewDialog {
-  padding: 14px 25px 20px 25px;
-  background: white;
 
-  .closeBtn {
-    .cancelIcon {
-      float: right;
-    }
-  }
-
-  .headerInfo {
-    .saveIdeaDetail {
-      .mainheader {
-        font-size: 25px;
-        margin-top: 35px;
-        margin-left: 39px;
-        // letter-spacing: 1.5px;
-      }
-
-      .subHeader {
-        font-size: 17px;
-        // letter-spacing: 1px;
-        margin-top: 30px;
-        margin-left: 39px;
-        line-height: 25px;
-        color: #777;
-      }
-    }
-  }
-
-  .inputDetails {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .btnContainer {
-    margin-top: 15px;
-    margin-bottom: 20px;
-    // text-align: right;
-
-    .shareBtn {
-      width: 100%;
-      height: 50px;
-    }
-  }
-}
 </style>
