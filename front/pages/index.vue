@@ -100,7 +100,7 @@
               <img
                 alt="image"
                 class="buttomLeftImage"
-                src="~/assets/images/newLastImage.png"
+                src="~/assets/images/home_footer.png"
               />
             </div>
           </div>
@@ -148,11 +148,11 @@
           <div class="subHeader">That is, if you don't forget it !</div>
 
           <div class="firstImageContainer">
-            <img
+            <!-- <img
               alt="image"
               class="firstImage"
               src="~/assets/images/mobileTopImage.png"
-            />
+            /> -->
           </div>
           <div class="descriptionSection">
             Submitting an idea every day is as simple as <br />sending an email.
@@ -243,7 +243,7 @@
             <img
               alt="image"
               class="lastImage"
-              src="~/assets/images/newLastImage.png"
+              src="~/assets/images/home_footer.png"
             />
           </div>
           <div class="descriptionSection">
@@ -341,7 +341,6 @@ export default {
         text-align: left;
 
         .firstHeader {
-          font-family: Avenir;
           font-size: 40px;
           font-weight: 400;
           line-height: 1.2;
