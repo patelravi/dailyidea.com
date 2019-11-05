@@ -1,92 +1,59 @@
 <template>
-  <Layout
-    v-bind="{
+	<Layout v-bind="{
       currentPage: 'Profile',
       pageOptions: mobileHeaderUiOptions
-    }"
-  >
-    <v-layout id="createIdeaPage">
-      <img class="backgroundLamp" src="~/assets/images/light_gray_lamp.png" />
+    }">
+		<v-layout id="createIdeaPage">
 
-      <div class="createIdeaBox">
-        <!-- Header -->
-        <v-layout class="text" hidden-sm-and-down>
-          My idea:
-          <div class="privateIcon">
-            <img
-              alt="image"
-              class="globeSmallImage"
-              src="~/assets/images/publicIdea.png"
-            />
-          </div>
-        </v-layout>
+			<div class="createIdeaBox">
+				<!-- Header -->
+				<v-layout class="headerText" hidden-sm-and-down>
+					<v-row>
+						<v-col>MY IDEA
+						</v-col>
+						<v-col class="privateIcon">
+							<img alt="image" src="~/assets/images/publicIdea.png" />
+						</v-col>
+					</v-row>
+				</v-layout>
 
-        <!-- title -->
-        <v-textarea
-          v-model="title"
-          v-validate="'required|max:100'"
-          :error-messages="errors.collect('title')"
-          data-vv-name="title"
-          outlined
-          label="Idea Title"
-        >
-        </v-textarea>
+				<!-- title -->
+				<v-textarea v-model="title" v-validate="'required|max:100'" :error-messages="errors.collect('title')" data-vv-name="title" outlined label="Type your idea Title">
+				</v-textarea>
 
-        <!-- Descriptiion = trix editor -->
-        <div class="ideaEditor">
-          <VueTrix v-model="contents" class="editor" />
-        </div>
-        <div v-if="!contents" class="errorMsg">
-          {{ errorMsg }}
-        </div>
+				<!-- Descriptiion = trix editor -->
+				<div class="ideaEditor">
+					<VueTrix v-model="contents" :class="{'errorBox': errorMsg }" placeholder="Type your idea description" class="trixEditor" />
+					<div v-if="!contents" class="trixErrorMsg">
+						{{ errorMsg }}
+					</div>
+				</div>
 
-        <!-- Tags -->
-        <v-combobox
-          v-model="chips"
-          v-validate="'required|max:100'"
-          :error-messages="errors.collect('tag')"
-          data-vv-name="tag"
-          class="ideaTag"
-          :items="items"
-          chips
-          clearable
-          multiple
-          outlined
-          label="Add Tags"
-        >
-          <template v-slot:selection="{ attrs, item, select, selected }">
-            <v-chip
-              v-bind="attrs"
-              :input-value="selected"
-              close
-              label
-              @click="select"
-              @click:close="remove(item)"
-            >
-              <strong>{{ item }}</strong>
-            </v-chip>
-          </template>
-        </v-combobox>
+				<!-- Tags -->
+				<v-combobox v-model="chips" v-validate="'required|max:100'" :error-messages="errors.collect('tag')" data-vv-name="tag" class="ideaTag" :items="items" chips clearable multiple outlined label="Add Tags">
+					<template v-slot:selection="{ attrs, item, select, selected }">
+						<v-chip v-bind="attrs" :input-value="selected" close label @click="select" @click:close="remove(item)">
+							<strong>{{ item }}</strong>
+						</v-chip>
+					</template>
+				</v-combobox>
 
-        <!-- Submit -->
-        <div class="submitBtn">
-          <v-btn :loading="creatingIdea" @click="onCreateIdea">Submit</v-btn>
-        </div>
-      </div>
+				<!-- Submit -->
+				<div class="submitBtn">
+					<v-btn :loading="creatingIdea" @click="onCreateIdea">Submit</v-btn>
+				</div>
 
-      <!-- Bottom snackbar message -->
-      <v-snackbar
-        v-model="snackbarVisible"
-        :timeout="2000"
-        :color="snackbarColor"
-      >
-        {{ snackbarMessage }}
-        <v-btn color="white" text @click="snackbarVisible = false">
-          Close
-        </v-btn>
-      </v-snackbar>
-    </v-layout>
-  </Layout>
+			</div>
+
+			<!-- Bottom snackbar message -->
+			<v-snackbar v-model="snackbarVisible" :timeout="2000" :color="snackbarColor">
+				{{ snackbarMessage }}
+				<v-btn color="white" text @click="snackbarVisible = false">
+					Close
+				</v-btn>
+			</v-snackbar>
+		</v-layout>
+	</Layout>
 </template>
 <script>
 import { graphqlOperation } from '@aws-amplify/api'
@@ -94,173 +61,175 @@ import Layout from '@/components/layout/Layout'
 import createIdea from '~/graphql/mutations/createIdea'
 
 export default {
-  components: { Layout },
-  $_veeValidate: {
-    validator: 'new'
-  },
-  data: () => ({
-    mobileHeaderUiOptions: {
-      pageTitle: "Bob's Profile",
-      leftButtonType: 'back'
-    },
-    contents: '',
-    title: '',
-    creatingIdea: false,
-    chips: [],
-    // sjahj: true,
-    errorMsg: null,
+	components: { Layout },
+	$_veeValidate: {
+		validator: 'new'
+	},
+	data: () => ({
+		mobileHeaderUiOptions: {
+			pageTitle: "Bob's Profile",
+			leftButtonType: 'back'
+		},
+		contents: '',
+		title: '',
+		creatingIdea: false,
+		chips: [],
+		// sjahj: true,
+		errorMsg: null,
 
-    snackbarVisible: false,
-    snackbarMessage: '',
-    snackbarColor: 'success'
-  }),
-  created() {},
-  mounted() {},
-  methods: {
-    remove(item) {
-      this.chips.splice(this.chips.indexOf(item), 1)
-      this.chips = [...this.chips]
-    },
-    async onCreateIdea() {
-      let result = await this.$validator.validateAll()
-      if (!result) {
-        this.errorMsg = 'This field is required.'
-        return
-      }
+		snackbarVisible: false,
+		snackbarMessage: '',
+		snackbarColor: 'success'
+	}),
+	created() {},
+	mounted() {},
+	methods: {
+		remove(item) {
+			this.chips.splice(this.chips.indexOf(item), 1)
+			this.chips = [...this.chips]
+		},
+		async onCreateIdea() {
+			let result = await this.$validator.validateAll()
+			if (!result) {
+				this.errorMsg = 'This field is required.'
+				return
+			}
 
-      this.creatingIdea = true
+			this.creatingIdea = true
 
-      try {
-        let result = await this.$amplifyApi.graphql(
-          graphqlOperation(createIdea, {
-            content: this.contents,
-            title: this.title
-          })
-        )
+			try {
+				let result = await this.$amplifyApi.graphql(
+					graphqlOperation(createIdea, {
+						content: this.contents,
+						title: this.title
+					})
+				)
 
-        this.creatingIdea = false
-        this.ideaEditorVisible = false
+				this.creatingIdea = false
+				this.ideaEditorVisible = false
 
-        this.snackbarMessage = 'Idea Created'
-        this.snackbarColor = 'success'
-        this.snackbarVisible = true
+				this.snackbarMessage = 'Idea Created'
+				this.snackbarColor = 'success'
+				this.snackbarVisible = true
 
-        // Redirect to idea deail page
-        let ideaId = result.data.createIdea.ideaId
-        this.$router.push({
-          name: 'ideas-userId-ideaId',
-          params: { ideaId, userId: this.$store.getters['cognito/userSub'] },
-          force: true
-        })
-      } catch (err) {
-        this.creatingIdea = false
-        this.snackbarMessage = 'Something went wrong!!'
-        this.snackbarColor = 'error'
-        this.snackbarVisible = true
-        // console.error(err)
-      }
-    }
-  }
+				// Redirect to idea deail page
+				let ideaId = result.data.createIdea.ideaId
+				this.$router.push({
+					name: 'ideas-userId-ideaId',
+					params: { ideaId, userId: this.$store.getters['cognito/userSub'] },
+					force: true
+				})
+			} catch (err) {
+				this.creatingIdea = false
+				this.snackbarMessage = 'Something went wrong!!'
+				this.snackbarColor = 'error'
+				this.snackbarVisible = true
+				// console.error(err)
+			}
+		}
+	}
 }
 </script>
 
 <style lang="scss">
 #createIdeaPage {
-  background: white;
-  min-height: 94vh;
-  width: 100%;
-  overflow-x: hidden;
+	background: white;
+	min-height: 94vh;
+	width: 100%;
+	overflow-x: hidden;
 
-  .createIdeaBox {
-    width: 45%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 4vh;
+	.createIdeaBox {
+		width: 100%;
+		max-width: 750px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 4vh;
 
-    @media #{$small-screen} {
-      width: 90%;
-    }
+		@media #{$small-screen} {
+			width: 90%;
 
-    .text {
-      // width: 100%;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    .privateIcon {
-      width: 90%;
-      float: right;
-      text-align: right;
-      // margin-left: 89%;
-      .privateIcon {
-        font-size: 15px;
-      }
-    }
+			// fieldset {
+			// 	border: none !important;
+			// }
+		}
 
-    .ideaEditor {
-      font-size: 14px;
+		.headerText {
+			font-size: 16px;
 
-      @media #{$small-screen} {
-        font-size: 8px;
-      }
+			.privateIcon {
+				text-align: right;
+			}
+		}
 
-      .editor {
-        .trix-content {
-          height: 170px !important;
-          max-height: 200px !important;
-          overflow-y: auto;
-        }
-      }
-    }
-    .errorMsg {
-      color: #b71c1c;
-      font-size: 12px;
-      margin-top: 2px;
-      padding-left: 10px;
-    }
+		.ideaEditor {
+			margin-top: 3vh;
+			font-size: 14px;
 
-    .ideaTag {
-      padding-top: 30px;
+			@media #{$small-screen} {
+				font-size: 8px;
+			}
 
-      .v-chip {
-        background-color: rgba(192, 183, 197);
-        color: white;
+			.trixEditor {
+				.trix-content {
+					height: 170px !important;
+					max-height: 200px !important;
+					overflow-y: auto;
+					@media #{$small-screen} {
+						border: none !important;
+					}
+				}
+				trix-editor:empty:not(:focus)::before {
+					color: #9c9c9c;
+					font-size: 16px;
+				}
+			}
+			.trixEditor.errorBox {
+				.trix-content {
+					border: 2px solid #b71c1c;
+				}
+				trix-editor:empty:not(:focus)::before {
+					color: #b71c1c;
+				}
+			}
 
-        i {
-          color: white;
-        }
-      }
+			.trixErrorMsg {
+				color: #b71c1c;
+				font-size: 12px;
+				margin-top: 5px;
+				padding-left: 10px;
+			}
+		}
 
-      .v-icon.mdi-menu-down {
-        display: none;
-      }
+		.ideaTag {
+			padding-top: 30px;
 
-      .v-input__append-inner {
-        display: none;
-      }
-    }
+			.v-chip {
+				background-color: rgba(192, 183, 197);
+				color: white;
 
-    .submitBtn {
-      margin-top: 5vh;
+				i {
+					color: white;
+				}
+			}
 
-      button {
-        width: 100%;
-        height: 50px;
-        margin: 0px;
-      }
-    }
-  }
+			.v-icon.mdi-menu-down {
+				display: none;
+			}
 
-  .backgroundLamp {
-    position: fixed;
-    top: 20vh;
-    right: 5%;
-    width: 20%;
+			.v-input__append-inner {
+				display: none;
+			}
+		}
 
-    @media #{$small-screen} {
-      top: 20vh;
-      right: -40%;
-      width: 80%;
-    }
-  }
+		.submitBtn {
+			margin-top: 5vh;
+
+			button {
+				width: 100%;
+				height: 50px;
+				margin: 0px;
+			}
+		}
+	}
 }
 </style>
